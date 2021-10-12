@@ -32,8 +32,6 @@ model Event {
   location String
   start_time DateTime
   end_time DateTime
-  user User @relation(fields: [userId], references: [id])
-  userId Int
   attendees Attende[] 
   @@map("events")
 }
