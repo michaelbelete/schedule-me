@@ -29,7 +29,6 @@ model User {
 model Event {
   id  Int @default(autoincrement()) @id
   title String
-  duration String
   location String
   start_time DateTime
   end_time DateTime
