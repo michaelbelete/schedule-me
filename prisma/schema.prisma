@@ -23,7 +23,6 @@ model User {
   password String
   company Company?  @relation(fields: [companyId], references: [id])
   companyId Int?
-  events Event[]
 }
 
 model Event {
