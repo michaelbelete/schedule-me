@@ -23,6 +23,7 @@ model User {
   password String
   company Company?  @relation(fields: [companyId], references: [id])
   companyId Int?
+  events Event[]
 }
 
 model Event {
@@ -42,6 +43,6 @@ model Attende {
   id  Int @default(autoincrement()) @id
   name String
   email String
-  event Event[]
+  events Event[]
   @@map("attendees")
 }

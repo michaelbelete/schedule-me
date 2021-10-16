@@ -1,6 +1,6 @@
 import React from "react"
 // import { GetStaticProps } from "next"
-// import Layout from "../components/Layout"
+import Layout from "../layouts/Landing";
 // import Post, { PostProps } from "../components/Post"
 
 // export const getStaticProps: GetStaticProps = async () => {
@@ -21,7 +21,9 @@ import React from "react"
 
 const Blog: React.FC = () => {
   return (
-    <h1>Hello, world</h1>
+    <Layout>
+      <h1>Hello, world</h1>
+    </Layout>
   )
 }
 
