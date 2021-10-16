@@ -35,7 +35,7 @@ model Event {
   user User @relation(fields: [userId], references: [id])
   userId Int 
   attende Attende @relation(fields: [attendeId], references: [id])
-  atendeId Int
+  attendeId Int
   @@map("events")
 }
 
