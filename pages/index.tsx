@@ -1,4 +1,5 @@
 import React from "react"
+import CardLayout from "../layouts/card";
 // import { GetStaticProps } from "next"
 import Layout from "../layouts/Landing";
 // import Post, { PostProps } from "../components/Post"
@@ -22,7 +23,9 @@ import Layout from "../layouts/Landing";
 const Blog: React.FC = () => {
   return (
     <Layout>
-      <h1>Hello, world</h1>
+      <CardLayout>
+        <h1>Hello, world</h1>
+      </CardLayout>
     </Layout>
   )
 }

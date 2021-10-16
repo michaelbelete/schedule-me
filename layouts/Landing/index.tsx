@@ -8,9 +8,9 @@ type Props = {
 const LandingLayout: React.FC<Props> = (props) => (
     <div>
         <div className="absolute w-full h-96 bg-indigo-700"></div>
-        <div className="relative z-10 px-32 align-middle">
+        <div className="relative z-10 px-40 align-middle">
             <Header />
-            <div className="bg-white">
+            <div className="px-3">
                 { props.children }
             </div>
         </div>
