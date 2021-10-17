@@ -1,7 +1,21 @@
 import React from "react"
 import CardLayout from "../layouts/card";
-// import { GetStaticProps } from "next"
 import Layout from "../layouts/Landing";
+import LandingHeader from "../components/landing_header";
+
+const Landing: React.FC = () => {
+  return (
+    <Layout>
+      <LandingHeader />
+      <CardLayout>
+        <h1>Hello, world</h1>
+      </CardLayout>
+    </Layout>
+  )
+}
+
+export default Landing;
+// import { GetStaticProps } from "next"
 // import Post, { PostProps } from "../components/Post"
 
 // export const getStaticProps: GetStaticProps = async () => {
@@ -20,14 +34,4 @@ import Layout from "../layouts/Landing";
 //   return { props: { feed } }
 // }
 
-const Blog: React.FC = () => {
-  return (
-    <Layout>
-      <CardLayout>
-        <h1>Hello, world</h1>
-      </CardLayout>
-    </Layout>
-  )
-}
 
-export default Blog
