@@ -3,11 +3,11 @@ import prisma from "../../lib/prisma"
 import * as bcrypt from "bcrypt";
 
 export default async function handle(req, res) {
-  const { fullName, email, password, companyName } = req.body;
+  const { fullName, email, password, company } = req.body;
 
   const newCompany = await prisma.company.create({
     data: {
-      name: companyName,
+      name: company,
     },
   });
 

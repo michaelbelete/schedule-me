@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import CardLayout from "../layouts/card";
 import Layout from "../layouts/Landing/index"
+import Router from "next/router";
+
 const Home: React.FC = () => {
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
@@ -9,7 +11,18 @@ const Home: React.FC = () => {
 
     const submitData = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        alert("ike")
+        try {
+            const body = { fullName, email, password, company };
+            await fetch("/api/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body),
+            }).then(() => {
+                Router.push("/api/auth/signin");
+            });
+        } catch (error) {
+            console.error(error);
+        }
     };
     return (
         <Layout>
@@ -45,7 +58,7 @@ const Home: React.FC = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Email"
                                     className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
-                                    type="text"
+                                    type="email"
                                     value={email}
                                 />
                                 <label htmlFor="Password" className="mt-2 w-full">Password</label>
@@ -55,7 +68,7 @@ const Home: React.FC = () => {
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Password"
                                     className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
-                                    type="text"
+                                    type="password"
                                     value={password}
                                 />
                                 <label htmlFor="company" className="mt-2 w-full">Company</label>
