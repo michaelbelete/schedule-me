@@ -4,6 +4,7 @@ import CardLayout from "../../layouts/card";
 import Layout from "../../layouts/Landing";
 import prisma from "../../lib/prisma";
 import { User } from ".prisma/client";
+import { Router } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
@@ -30,9 +31,25 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
     const [email, setEmail] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
+    const [userId, setUserId] = useState(user.id);
 
     const submitData = async (e: React.SyntheticEvent) => {
         e.preventDefault();
+        try {
+            const body = { fullName, title, location, email, startTime, endTime, userId};
+            await fetch("/api/booking", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body),
+            }).then((result) => {
+                console.log(result)
+                // Router.push("/success");
+            }).catch((error) => {
+                console.log(error)
+            });
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     if (!user) {
