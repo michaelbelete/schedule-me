@@ -1,18 +1,38 @@
 import React, { useState } from "react";
+import { GetServerSideProps } from "next";
 import CardLayout from "../../layouts/card";
 import Layout from "../../layouts/Landing";
+import prisma from "../../lib/prisma";
+import { User } from ".prisma/client";
 
-const Home: React.FC = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+
+    const { id } = context.query;
+
+    const user = await prisma.user.findFirst({
+        where: {
+            id: Number(id)
+        }
+    })
+
+    return {
+        props: {
+            user
+        }
+    }
+}
+
+const Booking: React.FC<{ user: User }> = ({user}) => {
+
+    const [fullName, setFullName] = useState('');
     const [title, setTitle] = useState('');
     const [location, setLocation] = useState('');
     const [email, setEmail] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
-    const [fullName, setFullName] = useState('');
 
     const submitData = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        alert("ike")
     };
     return (
         <Layout>
@@ -22,12 +42,12 @@ const Home: React.FC = () => {
                         <div className="w-full h-auto bg-pink-700 rounded-l-2xl">
                             <div className="flex flex-col gap-2 px-10 py-44">
                                 <p className="text-black">
-                                    For Michael Belete
+                                    For { user.fullName }
                                 </p>
                                 <h1 className="text-5xl font-bold text-white">
                                     Create Event
                                 </h1>
-                                <p className="text-black">Fill the form on the right to create event</p>
+                                <p className="text-black">Fill the form on the right to create event with <b>{ user.fullName }</b></p>
                             </div>
                         </div>
                         <div className="flex flex-col gap-4 px-8 py-5">
@@ -112,4 +132,4 @@ const Home: React.FC = () => {
     );
 }
 
-export default Home;
+export default Booking;

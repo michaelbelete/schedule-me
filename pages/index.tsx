@@ -1,90 +1,66 @@
 import React, { useRef, useState } from "react"
 import CardLayout from "../layouts/card";
 import Layout from "../layouts/Landing";
-import LandingHeader from "../components/landing_header";
+import { GetServerSideProps } from "next";
+import { getSession, useSession } from "next-auth/client";
+import prisma from "../lib/prisma";
+import { User } from ".prisma/client";
+import LLandingHeader from "../components/loggedIn/header";
+import LNavBar from "../components/loggedIn/navbar";
+import PNavBar from "../components/public/navbar";
+import PLandingHeader from "../components/public/header";
 
-import DataTable from 'react-data-table-component';
 
-const Landing: React.FC = () => {
-  const [copySuccess, setCopySuccess] = useState('Copy');
-  const [link, setLink] = useState('https://localhost:8000/a');
+export const getServerSideProps: GetServerSideProps = async({req, res}) => {
+  const session = await getSession({req});
 
-  const textAreaRef = useRef(null);
-
-  const columns = [
-    {
-      name: "title",
-      selector: row => row.title
-    },
-    {
-      name: "location",
-      selector: row => row.location
-    },
-    {
-      name: "start time",
-      selector: row => row.startTime
-    },
-    {
-      name: "end time",
-      selector: row => row.endTime
-    },
-    {
-      name: "Attende",
-      selector: row => row.attende.name
+  const user = await prisma.user.findFirst({
+    where: {
+      email: session.user.email
     }
-  ]
+  })
 
-  const data = [
-    {
-      title: "test",
-      startTime: "tonight",
-      endTime: "tomorrow",
-      attende: {
-        name: "mike belete"
-      }
+  return {
+    props: {
+      user
     }
-  ]
-  function copyToClipboard(e) {
-    textAreaRef.current.select();
-    document.execCommand('copy');
-    e.target.focus();
-    setCopySuccess('Copied!');
-  };
-  return (
-    <Layout>
-      {/* <LandingHeader /> */}
-      <div className="flex flex-col justify-center items-center px-36 mt-10 mb-5">
-        <h1 className="text-5xl font-bold text-white">Welcome, Michael Belete</h1>
-        <p className="mt-5 text-white">Create a new event and share your link to start using
-          schedule me</p>
+  }
+}
 
-        <div className="mt-10">
-          <div className="flex flex-row justify-center px-2 py-2 bg-white rounded-xl item-center">
-            <input
-              ref={textAreaRef}
-              value={link}
-              autoFocus
-              disabled
-              onChange={(e) => setLink(e.target.value)}
-              type="text"
-            />
-            {
-              <div>
-                <button onClick={copyToClipboard}> {copySuccess}</button>
-
-              </div>
-            }
-          </div>
-        </div>
+const Landing: React.FC<{ user: User }> = ({user}) => {
+  const [session, loading] = useSession();
+  
+  if(loading) {
+    return(
+      <div className="flex absolute flex-col justify-center items-center w-full h-full w-white">
+        <h1 className="mt-12 text-3xl text-black">Loading please wait...</h1>
       </div>
-      <CardLayout>
-        <div className="px-6 py-5">
-          <h1 className="text-2xl font-bold text-gray-700">Events</h1>
-          {/* <DataTable columns={columns} data={data}></DataTable> */}
-        </div>
-      </CardLayout>
-    </Layout>
-  )
+    );
+  }else{
+    if(session) {
+      return (
+        <Layout>
+          <LNavBar user={user} />
+          <LLandingHeader user={user} />
+          <CardLayout>
+            <h1>Logged in</h1>
+          </CardLayout>
+        </Layout>
+      )
+    }else{
+      return (
+        <Layout>
+          <PNavBar />
+          <PLandingHeader />
+          <CardLayout>
+            <h1>Logged Out</h1>
+          </CardLayout>
+        </Layout>
+      )
+    }
+   
+  }
+
 }
 
 export default Landing;

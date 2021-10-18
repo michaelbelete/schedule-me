@@ -3,7 +3,7 @@ import Providers from "next-auth/providers";
 import prisma from "../../../lib/prisma";
 import * as bcrypt from "bcrypt";
 
-let userAccount = null;
+let user = null;
 
 const configuration = {
   cookie: {
@@ -31,6 +31,11 @@ const configuration = {
           where: {
             email: credentials.Email,
           },
+          include: {
+            company: {
+              select: { name: true }
+            }
+          }
         });
 
         if (user !== null) {
@@ -39,8 +44,12 @@ const configuration = {
             user.password
           );
           if (isMatch) {
-            userAccount = user;
-            return user;
+            return {
+              name: user.fullName,
+              email: user.email,
+              image: user.company.name,
+              ...user
+            };
           } else {
             return null;
           }
@@ -50,40 +59,40 @@ const configuration = {
       },
     }),
   ],
-  callbacks: {
-    async redirect(url, baseUrl) {
-      return "/";
-    },
-    async session(session, token) {
-      const result = await prisma.company.findUnique({
-        where: {
-          id: userAccount.companyId,
-        },
-      });
-      const data = {
-        name: result.name,
-        email: userAccount.email,
-      };
-      if (userAccount !== null) {
-        session.user = data;
-      } else if (
-        typeof token.user !== typeof undefined &&
-        (typeof session.user === typeof undefined ||
-          (typeof session.user !== typeof undefined &&
-            typeof session.user.userId === typeof undefined))
-      ) {
-        session.user = data;
-      } else if (typeof token !== typeof undefined) {
-        session.token = token;
-      }
-      return session;
-    },
-    async jwt(token, user, account, profile, isNewUser) {
-      if (typeof user !== typeof undefined) {
-        token.user = user;
-      }
-      return token;
-    },
-  },
+  // callbacks: {
+  //   async redirect(url, baseUrl) {
+  //     return "/";
+  //   },
+  //   async session(session, token) {
+  //     const result = await prisma.company.findUnique({
+  //       where: {
+  //         id: user.companyId,
+  //       },
+  //     });
+  //     const data = {
+  //       name: result.name,
+  //       email: user.email,
+  //     };
+  //     if (user !== null) {
+  //       session.user = data;
+  //     } else if (
+  //       typeof token.user !== typeof undefined &&
+  //       (typeof session.user === typeof undefined ||
+  //         (typeof session.user !== typeof undefined &&
+  //           typeof session.user.id === typeof undefined))
+  //     ) {
+  //       session.user = data;
+  //     } else if (typeof token !== typeof undefined) {
+  //       session.token = token;
+  //     }
+  //     return session;
+  //   },
+  //   async jwt(token, user, account, profile, isNewUser) {
+  //     if (typeof user !== typeof undefined) {
+  //       token.user = user;
+  //     }
+  //     return token;
+  //   },
+  // },
 };
 export default (req, res) => NextAuth(req, res, configuration);
