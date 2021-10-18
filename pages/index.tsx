@@ -4,32 +4,47 @@ import Layout from "../layouts/Landing";
 import { GetServerSideProps } from "next";
 import { getSession, useSession } from "next-auth/client";
 import prisma from "../lib/prisma";
-import { User } from ".prisma/client";
+import { Event, User } from ".prisma/client";
 import LLandingHeader from "../components/loggedIn/header";
 import LNavBar from "../components/loggedIn/navbar";
 import PNavBar from "../components/public/navbar";
 import PLandingHeader from "../components/public/header";
+import Events from "../components/events";
 
 
 export const getServerSideProps: GetServerSideProps = async({req, res}) => {
   const session = await getSession({req});
 
   let user = {};
+  let event = {};
   if(session){
-    user = await prisma.user.findFirst({
+   await prisma.user.findFirst({
       where: {
         email: session.user.email
       }
-    })
+    }).then(async (result) => {
+      event = await prisma.event.findMany({
+        where: {
+          userId: result.id
+        },
+        include: {
+          attende: { select: { name: true } }
+        }
+      })
+      event = JSON.parse(JSON.stringify(event))
+      user = result
+    });
   }
+
   return {
     props: {
-      user
+      user,
+      event
     }
   }
 }
 
-const Landing: React.FC<{ user: User }> = ({user}) => {
+const Landing: React.FC<{ user: User, event: Event }> = ({user, event}) => {
   const [session, loading] = useSession();
   
   if(loading) {
@@ -45,7 +60,10 @@ const Landing: React.FC<{ user: User }> = ({user}) => {
           <LNavBar user={user} />
           <LLandingHeader user={user} />
           <CardLayout>
-            <h1>Logged in</h1>
+            <div className="px-10 py-6">
+              <h1 className="pb-5 text-4xl">Events</h1>
+              <Events events={event}/>              
+            </div>
           </CardLayout>
         </Layout>
       )

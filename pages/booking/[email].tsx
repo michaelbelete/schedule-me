@@ -42,6 +42,7 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
             }).then((result) => {
+                alert("booked successfully")
                 console.log(result)
                 // Router.push("/success");
             }).catch((error) => {
@@ -125,7 +126,7 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Email"
                                         className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
-                                        type="text"
+                                        type="email"
                                         value={email}
                                     />
 
@@ -138,7 +139,7 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
                                                 onChange={(e) => setStartTime(e.target.value)}
                                                 placeholder="Start Time"
                                                 className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
-                                                type="text"
+                                                type="datetime-local"
                                                 value={startTime}
                                             />
                                         </div>
@@ -150,7 +151,7 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
                                                 onChange={(e) => setEndTime(e.target.value)}
                                                 placeholder="End Time"
                                                 className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
-                                                type="text"
+                                                type="datetime-local"
                                                 value={endTime}
                                             />
                                         </div>

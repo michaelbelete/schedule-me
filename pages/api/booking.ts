@@ -14,8 +14,8 @@ export default async function handle(req, res) {
     data: {
       title: title,
       location: location,
-      start_time: startTime,
-      end_time: endTime,
+      start_time: new Date(startTime),
+      end_time: new Date(endTime),
       user: { connect: { id: userId } },
       attende: { connect: { id: newAttendee.id } },
     },
