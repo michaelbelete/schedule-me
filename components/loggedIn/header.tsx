@@ -23,7 +23,7 @@ const LLandingHeader: React.FC<{ user: User }> = (props) => {
                 <div className="flex flex-row justify-center px-2 py-2 bg-white rounded-xl item-center">
                     <input
                         ref={textAreaRef}
-                        value={`http://localhost:3000/${props?.user.id}`}
+                        value={`http://localhost:3000/${props?.user.email}`}
                         autoFocus
                         disabled
                         type="text"

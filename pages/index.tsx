@@ -14,12 +14,14 @@ import PLandingHeader from "../components/public/header";
 export const getServerSideProps: GetServerSideProps = async({req, res}) => {
   const session = await getSession({req});
 
-  const user = await prisma.user.findFirst({
-    where: {
-      email: session.user.email
-    }
-  })
-
+  let user = {};
+  if(session){
+    user = await prisma.user.findFirst({
+      where: {
+        email: session.user.email
+      }
+    })
+  }
   return {
     props: {
       user
