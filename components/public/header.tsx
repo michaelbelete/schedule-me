@@ -14,7 +14,7 @@ const PLandingHeader: React.FC = () => {
                     <Link href="/signup">
                         <p className="items-center px-7 py-2 text-sm font-bold text-white bg-pink-600 rounded-3xl">Join us</p>
                     </Link>
-                    <Link href="/login">
+                    <Link href="/api/auth/signin">
                         <p className="items-center px-7 py-2 text-sm font-bold text-black bg-white rounded-3xl">Log in</p>
                     </Link>
                 </div>

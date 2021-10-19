@@ -136,8 +136,7 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
                                             <input
                                                 id="StartTime"
                                                 autoFocus
-                                                min={date.toISOString()}
-                                                onChange={(e) => console.log(e.target.value)}
+                                                onChange={(e) => setStartTime(e.target.value)}
                                                 placeholder="Start Time"
                                                 className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
                                                 type="datetime-local"
