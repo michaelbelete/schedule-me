@@ -20,14 +20,13 @@ const LLandingHeader: React.FC<{ user: User }> = (props) => {
                 schedule me</p>
 
             <div className="mt-10">
-                <div className="flex flex-row justify-center px-2 py-2 bg-white rounded-xl item-center">
-                    <input
+                <div className="flex flex-row gap-5 justify-center px-8 py-3 bg-white rounded-xl item-center">
+                    <div
                         ref={textAreaRef}
-                        value={`http://localhost:3000/${props?.user.email}`}
-                        autoFocus
-                        disabled
-                        type="text"
-                    />
+                        className="w-auto"
+                    >
+                    {`http://localhost:3000/${props?.user.email}`}
+                    </div>
                     {
                         <div>
                             <button onClick={copyToClipboard}> {copySuccess}</button>

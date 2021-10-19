@@ -7,6 +7,7 @@ const Events: React.FC<{ events: Event }> = ({ events }) => {
         {
             name: 'Title',
             selector: row => row.title,
+            sortable: true,
         },
         {
             name: 'Location',
@@ -15,10 +16,12 @@ const Events: React.FC<{ events: Event }> = ({ events }) => {
         {
             name: 'Start Time',
             selector: row => row.start_time,
+            sortable: true,
         },
         {
             name: 'End Time',
             selector: row => row.end_time,
+            sortable: true,
         },
         {
             name: 'Attendee Name',
@@ -26,11 +29,12 @@ const Events: React.FC<{ events: Event }> = ({ events }) => {
         },
 
     ];
-    
+
     return(
-        <>x
+        <>
          <DataTable
             columns={columns}
+            type="text"
             data={events}
         />
         </>
