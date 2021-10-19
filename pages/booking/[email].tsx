@@ -4,7 +4,8 @@ import CardLayout from "../../layouts/card";
 import Layout from "../../layouts/Landing";
 import prisma from "../../lib/prisma";
 import { User } from ".prisma/client";
-import { Router } from "next/router";
+import Router from "next/router";
+
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
@@ -42,9 +43,7 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
             }).then((result) => {
-                alert("booked successfully")
-                console.log(result)
-                // Router.push("/success");
+                Router.push("/success");
             }).catch((error) => {
                 console.log(error)
             });
