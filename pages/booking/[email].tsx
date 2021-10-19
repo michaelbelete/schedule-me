@@ -33,7 +33,8 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [userId, setUserId] = useState(user.id);
-
+    const date = new Date();
+    const today = `${date.getFullYear()}-${date.getMonth()}-${date.getDay() + date.getHours()}:${date.getMinutes()}`
     const submitData = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         try {
@@ -135,7 +136,8 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
                                             <input
                                                 id="StartTime"
                                                 autoFocus
-                                                onChange={(e) => setStartTime(e.target.value)}
+                                                min={date.toISOString()}
+                                                onChange={(e) => console.log(e.target.value)}
                                                 placeholder="Start Time"
                                                 className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
                                                 type="datetime-local"
@@ -147,7 +149,8 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
                                             <input
                                                 id="EndTime"
                                                 autoFocus
-                                                onChange={(e) => setEndTime(e.target.value)}
+                                                min={startTime}
+                                                onChange={(e) => {setEndTime(e.target.value); console.log(startTime) }}
                                                 placeholder="End Time"
                                                 className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
                                                 type="datetime-local"
