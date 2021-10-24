@@ -2,6 +2,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+
+// The P stand for Public so this component doesn't required auth to be showed
 const PNavBar: React.FC = (props) => {
     return (
         <header className="py-8">

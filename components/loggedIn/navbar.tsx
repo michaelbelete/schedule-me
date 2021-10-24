@@ -4,6 +4,7 @@ import Link from "next/link";
 import { signOut } from "next-auth/client";
 import { User } from ".prisma/client";
 
+// The L stand for logged in so this component is showed only when the user is logged in 
 const LNavBar: React.FC<{ user: User }> = ({ user }) => {
     return (
         <header className="py-8">
