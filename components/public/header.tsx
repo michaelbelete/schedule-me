@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const PLandingHeader: React.FC = () => {
+const HeaderPublic: React.FC = () => {
 
     return (
         <div className="flex flex-row justify-between mb-10">
@@ -30,4 +30,4 @@ const PLandingHeader: React.FC = () => {
     );
 };
 
-export default PLandingHeader;
+export default HeaderPublic;

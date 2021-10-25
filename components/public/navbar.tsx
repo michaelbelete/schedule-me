@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const PNavBar: React.FC = (props) => {
+const NavbarPublic: React.FC = (props) => {
     return (
         <header className="py-8">
             <nav className="flex flex-row justify-between">
@@ -41,4 +41,4 @@ const PNavBar: React.FC = (props) => {
     )
 };
 
-export default PNavBar;
+export default NavbarPublic;

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { User } from ".prisma/client";
 
-const LLandingHeader: React.FC<{ user: User }> = (props) => {
+const HeaderLoggedIn: React.FC<{ user: User }> = (props) => {
 
 
     const [copySuccess, setCopySuccess] = useState('Copy');
@@ -34,10 +34,9 @@ const LLandingHeader: React.FC<{ user: User }> = (props) => {
                         </div>
                     }
                 </div>
-                <p></p>
             </div>
         </div>
     );
 };
 
-export default LLandingHeader;
+export default HeaderLoggedIn;

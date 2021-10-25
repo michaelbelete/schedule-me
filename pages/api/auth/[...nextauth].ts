@@ -59,40 +59,5 @@ const configuration = {
       },
     }),
   ],
-  // callbacks: {
-  //   async redirect(url, baseUrl) {
-  //     return "/";
-  //   },
-  //   async session(session, token) {
-  //     const result = await prisma.company.findUnique({
-  //       where: {
-  //         id: user.companyId,
-  //       },
-  //     });
-  //     const data = {
-  //       name: result.name,
-  //       email: user.email,
-  //     };
-  //     if (user !== null) {
-  //       session.user = data;
-  //     } else if (
-  //       typeof token.user !== typeof undefined &&
-  //       (typeof session.user === typeof undefined ||
-  //         (typeof session.user !== typeof undefined &&
-  //           typeof session.user.id === typeof undefined))
-  //     ) {
-  //       session.user = data;
-  //     } else if (typeof token !== typeof undefined) {
-  //       session.token = token;
-  //     }
-  //     return session;
-  //   },
-  //   async jwt(token, user, account, profile, isNewUser) {
-  //     if (typeof user !== typeof undefined) {
-  //       token.user = user;
-  //     }
-  //     return token;
-  //   },
-  // },
 };
 export default (req, res) => NextAuth(req, res, configuration);
