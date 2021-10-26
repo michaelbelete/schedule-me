@@ -57,8 +57,8 @@ const Landing: React.FC<{ user: User, event: Event }> = ({ user, event }) => {
     if (session) {
       return (
         <Layout>
-          <LNavBar user={user} />
-          <LLandingHeader user={user} />
+          <NavbarLoggedIn user={user} />
+          <HeaderLoggedIn user={user} />
           <CardLayout>
             <div className="px-10 py-6">
               <h1 className="pb-5 text-4xl">Events</h1>
@@ -130,23 +130,6 @@ const Landing: React.FC<{ user: User, event: Event }> = ({ user, event }) => {
 }
 
 export default Landing;
-// import { GetStaticProps } from "next"
-// import Post, { PostProps } from "../components/Post"
 
-// export const getStaticProps: GetStaticProps = async () => {
-//   const feed = [
-//     {
-//       id: 1,
-//       title: "Prisma is the perfect ORM for Next.js",
-//       content: "[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!",
-//       published: false,
-//       author: {
-//         name: "Nikolas Burk",
-//         email: "burk@prisma.io",
-//       },
-//     },
-//   ]
-//   return { props: { feed } }
-// }
 
 

@@ -27,7 +27,6 @@ const LLandingHeader: React.FC<{ user: User }> = (props) => {
                         <span>{ copySuccess }</span>
                     </CopyToClipboard>
                 </div>
-                <p></p>
             </div>
         </div>
     );

@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// The P stand for Public so this component doesn't required auth to be showed
-const PLandingHeader: React.FC = () => {
+const HeaderPublic: React.FC = () => {
 
     return (
         <div className="flex flex-row justify-between mb-10">
@@ -31,4 +30,4 @@ const PLandingHeader: React.FC = () => {
     );
 };
 
-export default PLandingHeader;
+export default HeaderPublic;

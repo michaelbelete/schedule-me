@@ -4,8 +4,7 @@ import Link from "next/link";
 import { signOut } from "next-auth/client";
 import { User } from ".prisma/client";
 
-// The L stand for logged in so this component is showed only when the user is logged in 
-const LNavBar: React.FC<{ user: User }> = ({ user }) => {
+const NavbarLoggedIn: React.FC<{ user: User }> = ({ user }) => {
     return (
         <header className="py-8">
             <nav className="flex flex-row justify-between">
@@ -45,4 +44,4 @@ const LNavBar: React.FC<{ user: User }> = ({ user }) => {
     )
 };
 
-export default LNavBar;
+export default NavbarLoggedIn;
