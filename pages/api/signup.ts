@@ -1,4 +1,3 @@
-import { getSession } from "next-auth/client";
 import prisma from "../../lib/prisma"
 import * as bcrypt from "bcrypt";
 

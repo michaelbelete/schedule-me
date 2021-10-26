@@ -4,6 +4,8 @@ import CardLayout from "../../layouts/card";
 import Layout from "../../layouts/Landing";
 import prisma from "../../lib/prisma";
 import { User } from ".prisma/client";
+import Router from "next/router";
+
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
@@ -30,9 +32,25 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
     const [email, setEmail] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
-
+    const [userId, setUserId] = useState(user.id);
+    const date = new Date();
+    const today = `${date.getFullYear()}-${date.getMonth()}-${date.getDay() + date.getHours()}:${date.getMinutes()}`
     const submitData = async (e: React.SyntheticEvent) => {
         e.preventDefault();
+        try {
+            const body = { fullName, title, location, email, startTime, endTime, userId};
+            await fetch("/api/booking", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body),
+            }).then((result) => {
+                Router.push("/success");
+            }).catch((error) => {
+                console.log(error)
+            });
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     if (!user) {
@@ -108,7 +126,7 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Email"
                                         className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
-                                        type="text"
+                                        type="email"
                                         value={email}
                                     />
 
@@ -121,7 +139,7 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
                                                 onChange={(e) => setStartTime(e.target.value)}
                                                 placeholder="Start Time"
                                                 className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
-                                                type="text"
+                                                type="datetime-local"
                                                 value={startTime}
                                             />
                                         </div>
@@ -130,10 +148,11 @@ const Booking: React.FC<{ user: User }> = ({ user }) => {
                                             <input
                                                 id="EndTime"
                                                 autoFocus
-                                                onChange={(e) => setEndTime(e.target.value)}
+                                                min={startTime}
+                                                onChange={(e) => {setEndTime(e.target.value); console.log(startTime) }}
                                                 placeholder="End Time"
                                                 className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
-                                                type="text"
+                                                type="datetime-local"
                                                 value={endTime}
                                             />
                                         </div>
