@@ -5,11 +5,12 @@ import { GetServerSideProps } from "next";
 import { getSession, useSession } from "next-auth/client";
 import prisma from "../lib/prisma";
 import { Event, User } from ".prisma/client";
-import LLandingHeader from "../components/loggedIn/header";
-import LNavBar from "../components/loggedIn/navbar";
-import PNavBar from "../components/public/navbar";
-import PLandingHeader from "../components/public/header";
+import HeaderLoggedIn from "../components/loggedIn/header";
+import NavBarLoggedIn from "../components/loggedIn/navbar";
+import NavBarPublic from "../components/public/navbar";
+import HeaderPublic from "../components/public/header";
 import Events from "../components/events";
+import NavbarPublic from "../components/public/navbar";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -28,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
           userId: result.id
         },
         include: {
-          attende: { select: { name: true } }
+          attendee: { select: { name: true } }
         }
       })
       event = JSON.parse(JSON.stringify(event))
@@ -57,7 +58,7 @@ const Landing: React.FC<{ user: User, event: Event }> = ({ user, event }) => {
     if (session) {
       return (
         <Layout>
-          <NavbarLoggedIn user={user} />
+          <NavBarLoggedIn user={user} />
           <HeaderLoggedIn user={user} />
           <CardLayout>
             <div className="px-10 py-6">
@@ -69,9 +70,10 @@ const Landing: React.FC<{ user: User, event: Event }> = ({ user, event }) => {
       )
     } else {
       return (
+        
         <Layout>
-          <PNavBar />
-          <PLandingHeader />
+          <NavBarPublic />
+          <HeaderPublic />
           <div className="my-3">
             <CardLayout>
               <div className="flex flex-col items-center px-10 pt-10">

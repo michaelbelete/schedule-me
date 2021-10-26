@@ -4,8 +4,7 @@ import { User } from ".prisma/client";
 import { useRouter } from "next/router";
 import { userInfo } from "os";
 
-// The L stand for logged in so this component is showed only when the user is logged in 
-const LLandingHeader: React.FC<{ user: User }> = (props) => {
+const HeaderLoggedIn: React.FC<{ user: User }> = (props) => {
     const router = useRouter();
     const link = window.location;
     const [value, setValue] = useState(`${link}booking/${props?.user.email}`);
@@ -32,4 +31,4 @@ const LLandingHeader: React.FC<{ user: User }> = (props) => {
     );
 };
 
-export default LLandingHeader;
+export default HeaderLoggedIn;
