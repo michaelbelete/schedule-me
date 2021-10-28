@@ -23,17 +23,27 @@ model User {
   password String
   company Company?  @relation(fields: [companyId], references: [id])
   companyId Int?
-  events Event[]
+  event_type EventType[]
+}
+
+model EventType {
+  id Int @default(autoincrement()) @id
+  title String
+  duration String
+  location String
+  description String
+  user User @relation(fields: [userId], references: [id])
+  userId Int 
+  event Event[]
+  @@map("event_type")
 }
 
 model Event {
   id  Int @default(autoincrement()) @id
-  title String
-  location String
-  start_time DateTime
-  end_time DateTime
-  user User @relation(fields: [userId], references: [id])
-  userId Int 
+  eventTime DateTime @map("event_time")
+  status String //status of the event if the event is approved, rejected, asked to postpone
+  eventType EventType @relation(fields: [eventTypeId], references: [id])
+  eventTypeId Int @map("event_type_id")
   attendee Attendee @relation(fields: [attendeeId], references: [id])
   attendeeId Int
   @@map("events")
