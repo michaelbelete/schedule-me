@@ -4,7 +4,7 @@ import Layout from "../layouts/Landing";
 import { GetServerSideProps } from "next";
 import { getSession, useSession } from "next-auth/client";
 import prisma from "../lib/prisma";
-import { Event, User } from ".prisma/client";
+import { Event, EventType, User } from ".prisma/client";
 import HeaderLoggedIn from "../components/loggedIn/header";
 import NavBarLoggedIn from "../components/loggedIn/navbar";
 import NavBarPublic from "../components/public/navbar";
@@ -16,36 +16,61 @@ import NavbarPublic from "../components/public/navbar";
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
 
-  let user = {};
-  let event = {};
   if (session) {
-    await prisma.user.findFirst({
+    const user: User = await prisma.user.findFirst({
       where: {
         email: session.user.email
       }
-    }).then(async (result) => {
-      event = await prisma.event.findMany({
-        where: {
-          userId: result.id
-        },
-        include: {
-          attendee: { select: { name: true } }
-        }
-      })
-      event = JSON.parse(JSON.stringify(event))
-      user = result
     });
-  }
 
-  return {
-    props: {
-      user,
-      event
+    const eventType: EventType = await prisma.eventType.findMany({
+      where: {
+        userId: user.id
+      },
+      include: {
+        event: {
+          select: {
+            attendee: true,
+            eventTime: true,
+            status: true
+          }
+        }
+      }
+    });
+    //   await prisma.user.findFirst({
+    //     where: {
+    //       email: session.user.email
+    //     }
+    //   }).then(async (result) => {
+    //     event = await prisma.event.findMany({
+    //       where: {
+    //         userId: result.id
+    //       },
+    //       include: {
+    //         attendee: { select: { name: true } }
+    //       }
+    //     })
+    //     event = JSON.parse(JSON.stringify(event))
+    //     user = result
+    //   });
+    return {
+      props: {
+        user,
+        eventType
+      }
+    }
+  }else{
+    // if the user not logged in
+    //show public data fetched
+    return {
+      props: {
+        
+      }
     }
   }
 }
 
-const Landing: React.FC<{ user: User, event: Event }> = ({ user, event }) => {
+const Landing: React.FC<{ user: User, eventType: EventType }> = ({ user, eventType }) => {
   const [session, loading] = useSession();
 
   if (loading) {
@@ -62,15 +87,15 @@ const Landing: React.FC<{ user: User, event: Event }> = ({ user, event }) => {
           <HeaderLoggedIn user={user} />
           <CardLayout>
             <div className="px-10 py-6">
-              <h1 className="pb-5 text-4xl">Events</h1>
-              <Events events={event} />
+              <h1 className="pb-5 text-4xl">Event Types</h1>
+              <Events eventType={eventType} />
             </div>
           </CardLayout>
         </Layout>
       )
     } else {
       return (
-        
+
         <Layout>
           <NavBarPublic />
           <HeaderPublic />

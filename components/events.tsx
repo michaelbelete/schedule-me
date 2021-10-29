@@ -1,8 +1,8 @@
 import DataTable from 'react-data-table-component';
-import { Event } from ".prisma/client";
+import { EventType } from ".prisma/client";
 import React from "react";
 
-const Events: React.FC<{ events: Event }> = ({ events }) => {
+const Events: React.FC<{ eventType: EventType }> = ({ eventType }) => {
     const columns = [
         {
             name: 'Title',
@@ -23,11 +23,6 @@ const Events: React.FC<{ events: Event }> = ({ events }) => {
             selector: row => row.end_time,
             sortable: true,
         },
-        {
-            name: 'Attendee Name',
-            selector: row => row.attende.name,
-        },
-
     ];
 
     return(
@@ -35,7 +30,7 @@ const Events: React.FC<{ events: Event }> = ({ events }) => {
          <DataTable
             columns={columns}
             type="text"
-            data={events}
+            data={eventType}
         />
         </>
     );
