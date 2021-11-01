@@ -37,22 +37,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
         }
       }
     });
-    //   await prisma.user.findFirst({
-    //     where: {
-    //       email: session.user.email
-    //     }
-    //   }).then(async (result) => {
-    //     event = await prisma.event.findMany({
-    //       where: {
-    //         userId: result.id
-    //       },
-    //       include: {
-    //         attendee: { select: { name: true } }
-    //       }
-    //     })
-    //     event = JSON.parse(JSON.stringify(event))
-    //     user = result
-    //   });
     return {
       props: {
         user,

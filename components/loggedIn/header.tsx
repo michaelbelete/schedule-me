@@ -3,6 +3,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { User } from ".prisma/client";
 import { useRouter } from "next/router";
 import { userInfo } from "os";
+import Link from "next/link";
 
 const HeaderLoggedIn: React.FC<{ user: User }> = (props) => {
     const router = useRouter();
@@ -18,14 +19,19 @@ const HeaderLoggedIn: React.FC<{ user: User }> = (props) => {
                 schedule me</p>
 
             <div className="mt-10">
-                <div className="flex flex-row gap-5 justify-center px-8 py-3 bg-white rounded-xl item-center">
-                    <input value={value} disabled className="w-96"/>
 
+                <Link href="/eventType">
+                    <p className="items-center px-8 py-3 text-sm font-bold text-white bg-pink-600 rounded-3xl cursor-pointer">
+                        Create Event Type
+                    </p>
+                </Link>
+                {/* <div className="flex flex-row gap-5 justify-center px-8 py-3 bg-white rounded-xl item-center">
+                    <input value={value} disabled className="w-96" />
                     <CopyToClipboard text={value}
                         onCopy={() => setCopySuccess("Copied")}>
                         <span>{ copySuccess }</span>
                     </CopyToClipboard>
-                </div>
+                </div> */}
             </div>
         </div>
     );
