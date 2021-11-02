@@ -11,6 +11,8 @@ import NavBarPublic from "../components/public/navbar";
 import HeaderPublic from "../components/public/header";
 import Events from "../components/events";
 import NavbarPublic from "../components/public/navbar";
+import { AiFillClockCircle, AiFillEnvironment } from "react-icons/ai";
+import EventTypeCard from "../components/eventTypeCard";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
@@ -23,38 +25,30 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       }
     });
 
-    const eventType: EventType = await prisma.eventType.findMany({
+    const eventTypes: EventType[] = await prisma.eventType.findMany({
       where: {
         userId: user.id
       },
-      include: {
-        event: {
-          select: {
-            attendee: true,
-            eventTime: true,
-            status: true
-          }
-        }
-      }
+      orderBy: { id: "desc" }
     });
     return {
       props: {
         user,
-        eventType
+        eventTypes
       }
     }
-  }else{
+  } else {
     // if the user not logged in
     //show public data fetched
     return {
       props: {
-        
+
       }
     }
   }
 }
 
-const Landing: React.FC<{ user: User, eventType: EventType }> = ({ user, eventType }) => {
+const Landing: React.FC<{ user: User, eventTypes: EventType[] }> = ({ user, eventTypes }) => {
   const [session, loading] = useSession();
 
   if (loading) {
@@ -65,16 +59,31 @@ const Landing: React.FC<{ user: User, eventType: EventType }> = ({ user, eventTy
     );
   } else {
     if (session) {
+      const generateEventType = () => {
+        let result = [];
+        eventTypes.forEach((eventType) => {
+          result.push(<EventTypeCard eventType={eventType}/>)
+        })
+
+        return result;
+      }
+
       return (
         <Layout>
           <NavBarLoggedIn user={user} />
           <HeaderLoggedIn user={user} />
-          <CardLayout>
-            <div className="px-10 py-6">
-              <h1 className="pb-5 text-4xl">Event Types</h1>
-              <Events eventType={eventType} />
-            </div>
-          </CardLayout>
+          <div className="pb-44">
+            <CardLayout>
+              <div className="px-10 py-6">
+                <h1 className="pb-8 text-4xl">Event Types</h1>
+                <div className="grid grid-cols-3 gap-10">
+                  { generateEventType() }
+                </div>
+                <pre>
+              </pre>
+              </div>
+            </CardLayout>
+          </div>
         </Layout>
       )
     } else {

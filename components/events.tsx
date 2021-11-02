@@ -14,12 +14,12 @@ const Events: React.FC<{ eventType: EventType }> = ({ eventType }) => {
             selector: row => row.location,
         },
         {
-            name: 'Start Time',
-            selector: row => row.start_time,
+            name: 'Description',
+            selector: row => row.description,
             sortable: true,
         },
         {
-            name: 'End Time',
+            name: '',
             selector: row => row.end_time,
             sortable: true,
         },
