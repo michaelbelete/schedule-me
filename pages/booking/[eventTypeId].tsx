@@ -4,7 +4,8 @@ import CardLayout from "../../layouts/card";
 import Layout from "../../layouts/Landing";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { Calendar } from "react-modern-calendar-datepicker";
-import { AiFillClockCircle, AiFillEnvironment } from "react-icons/ai";
+import { AiFillClockCircle, AiFillEnvironment, AiOutlineArrowLeft } from "react-icons/ai";
+import Router from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
@@ -23,6 +24,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
     const [selectedDay, setSelectedDay] = useState();
     const [selectedTime, setSelectedTime] = useState('');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+
     const [nextStep, setNextStep] = useState(false);
     const selectedDate = (selectedDay == null) ? "" : new Date(`${selectedDay?.year}-${selectedDay?.month}-${selectedDay?.day}`);
     const selectedDateString = (selectedDay == null) ? "" : selectedDate.toDateString();
@@ -51,6 +55,24 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
         timeBoolean = !timeBoolean;
     }
 
+    const submitData = async (e: React.SyntheticEvent) => {
+        e.preventDefault();
+        try {
+            const body = { selectedDate, selectedTime, name, email };
+            await fetch("/api/booking", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body),
+            }).then((result) => {
+                Router.push("/success");
+            }).catch((error) => {
+                console.log(error)
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <Layout>
             <div className="py-14">
@@ -74,8 +96,36 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
                         </div>
                         {nextStep ? (
                             <>
-                                <div>
-                                    hello
+                                <div className="col-span-4">
+                                    <div className="flex flex-row gap-6 pb-10">
+                                        <button onClick={() => { setNextStep(false) }}><AiOutlineArrowLeft size="23" className="mt-2" /></button>
+                                        <p className="pt-1 text-lg font-bold">Enter Details</p>
+                                    </div>
+                                    <form onSubmit={submitData}>
+                                        <label htmlFor="fullName" className="w-full">Full Name</label>
+                                        <input
+                                            id="fullName"
+                                            autoFocus
+                                            onChange={(e) => setName(e.target.value)}
+                                            placeholder="Title"
+                                            className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
+                                            type="text"
+                                            value={name}
+                                            required
+                                        />
+                                        <label htmlFor="Email" className="mt-2 w-full">Email</label>
+                                        <input
+                                            id="Email"
+                                            autoFocus
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="Location"
+                                            className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
+                                            type="text"
+                                            value={email}
+                                            required
+                                        />
+                                        <input disabled={!name || !email} className="items-center p-3 mt-5 w-full text-sm font-bold text-white bg-pink-600 rounded-3xl disabled:opacity-80" type="submit" value="Schedule Event" />
+                                    </form>
                                 </div>
                             </>
                         ) : (
