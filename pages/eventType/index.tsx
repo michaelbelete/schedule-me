@@ -6,7 +6,7 @@ import Router from "next/router";
 
 
 const EventType: React.FC<{ user: User }> = ({ user }) => {
-
+    
     const [title, setTitle] = useState('');
     const [duration, setDuration] = useState('');
     const [location, setLocation] = useState('');
@@ -21,10 +21,10 @@ const EventType: React.FC<{ user: User }> = ({ user }) => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
             }).then((result) => {
-                    Router.push("/success");
-                }).catch((error) => {
-                    console.log(error)
-                });
+                Router.push("/success");
+            }).catch((error) => {
+                console.log(error)
+            });
         } catch (error) {
             console.error(error);
         }
@@ -69,18 +69,18 @@ const EventType: React.FC<{ user: User }> = ({ user }) => {
                                     required
                                 />
                                 <label htmlFor="Duration" className="mt-2 w-full">Duration(Minutes)</label>
-                                <input
+                                <select
                                     id="Duration"
                                     autoFocus
                                     onChange={(e) => setDuration(e.target.value)}
                                     placeholder="Duration"
                                     className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
-                                    type="number"
-                                    min="10"
-                                    value={duration}
-                                    required
-                                />
-
+                                    required>
+                                    <option value="10">10 min</option>
+                                    <option value="10">15 min</option>
+                                    <option value="10">30 min</option>
+                                    <option value="10">1 hour</option>
+                                </select>
                                 <label htmlFor="Description" className="mt-2 w-full">Description</label>
                                 <textarea
                                     id="Description"
