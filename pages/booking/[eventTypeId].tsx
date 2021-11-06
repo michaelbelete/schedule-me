@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { GetServerSideProps } from "next";
 import CardLayout from "../../layouts/card";
 import Layout from "../../layouts/Landing";
+import TimePicker from "../../components/timePicker";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { Calendar } from '@hassanmojab/react-modern-calendar-datepicker';
 import { AiFillClockCircle, AiFillEnvironment, AiOutlineArrowLeft } from "react-icons/ai";
@@ -11,7 +12,7 @@ import prisma from "../../lib/prisma";
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const { eventTypeId } = context.query;
-    
+
     const eventType = await prisma.eventType.findFirst({
         where: {
             id: Number(eventTypeId)
@@ -42,30 +43,6 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
     const selectedDate = (selectedDay == null) ? "" : new Date(`${selectedDay?.year}-${selectedDay?.month}-${selectedDay?.day}`);
     const selectedDateString = (selectedDay == null) ? "" : selectedDate.toDateString();
 
-    let timepicker = [];
-    let timeBoolean = true;
-    let time;
-
-    const F = (n) => {
-        if (n == 0) return 1
-        else return n - M(F(n - 1))
-    }
-
-    const M = (n) => {
-        if (n == 0) return 0
-        else return n - F(M(n - 1))
-    }
-
-    for (let index = 0; index < 36; index++) {
-        time = `${F(index)}:${timeBoolean ? "00" : "30"}`;
-        timepicker.push(
-            <button key={index} onClick={(e) => setSelectedTime(e.target.value)} className="py-2 mb-4 w-full text-2xl text-center text-white bg-purple-800 rounded-lg border-2 cursor-pointer" value={time}>
-                {time}
-            </button>
-        );
-        timeBoolean = !timeBoolean;
-    }
-
     const submitData = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         try {
@@ -93,18 +70,18 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
                             <div className="w-16 h-16 text-white bg-pink-700 rounded-full">
                                 <h1 className="px-4 py-3 text-4xl font-bold text">  {eventType.user.fullName.substr(0, 1).toUpperCase()}</h1>
                             </div>
-                            <h2 className="pt-3 pb-1 text-lg text-gray-600">{ eventType.user.fullName }</h2>
-                            <h1 className="pb-4 text-3xl font-bold text-gray-700">{ eventType.title }</h1>
+                            <h2 className="pt-3 pb-1 text-lg text-gray-600">{eventType.user.fullName}</h2>
+                            <h1 className="pb-4 text-3xl font-bold text-gray-700">{eventType.title}</h1>
                             <div className="flex flex-row gap-2">
                                 <AiFillClockCircle size="25" className="text-gray-500" />
-                                <p className="text-base text-gray-500">{ eventType.duration } { eventType.duration == 1 ? "Hour": "Minutes" }</p>
+                                <p className="text-base text-gray-500">{eventType.duration} {eventType.duration == 1 ? "Hour" : "Minutes"}</p>
                             </div>
                             <div className="flex flex-row gap-2 py-2">
                                 <AiFillEnvironment size="25" className="text-gray-500" />
-                                <p className="text-base text-gray-500">{ eventType.location } </p>
+                                <p className="text-base text-gray-500">{eventType.location} </p>
                             </div>
                             <p className="pt-2 w-full text-sm text-gray-800">
-                                { eventType.description }
+                                {eventType.description}
                             </p>
                         </div>
                         {nextStep ? (
@@ -157,7 +134,7 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
 
                                     {(selectedDateString) ? (
                                         <div className="overflow-x-hidden overflow-y-scroll h-96">
-                                            {timepicker}
+                                            <TimePicker duration={eventType.duration} onClick={setSelectedTime}/>
                                         </div>
                                     ) : ""}
                                 </div>
