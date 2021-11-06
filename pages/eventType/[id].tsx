@@ -6,12 +6,10 @@ import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import CardLayout from "../../layouts/card";
 import prisma from "../../lib/prisma";
 import { EventType } from ".prisma/client";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import {
     Scheduler,
-    MonthView,
+    DayView,
     Appointments,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
@@ -42,17 +40,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Events: React.FC<{ event: Event, eventType: EventType }> = ({ event, eventType }) => {
     let link = "localhost:3000/";
     if (typeof window === 'object') {
-        // Check if document is finally loaded
-
+        link = window.location.origin
     }
     const [value, setValue] = useState(`${link}/booking/${eventType?.id}`);
     const [copySuccess, setCopySuccess] = useState("copy");
 
-    const currentDate = '2018-11-01';
+    const currentDate = '2021-11-03';
     const schedulerData = [
-        { startDate: '2018-11-01T09:45', endDate: '2018-11-01T11:00', title: 'Meeting' },
-        { startDate: '2018-11-01T12:00', endDate: '2018-11-01T13:30', title: 'Go to a gym' },
+        { startDate: '2021-11-03T09:45', endDate: '2021-11-03T11:00', title: 'One to one meeting' },
+        { startDate: '2021-11-03T12:00', endDate: '2021-11-03T14:30', title: 'Pair programming' },
+        { startDate: '2021-11-03T12:00', endDate: '2021-11-03T15:30', title: 'Another Task' },
     ];
+
 
     return (
         <Layout>
@@ -76,16 +75,16 @@ const Events: React.FC<{ event: Event, eventType: EventType }> = ({ event, event
                 <CardLayout>
                     <div className="px-10 py-6">
                         <h1 className="pb-8 text-4xl">Events</h1>
-                        <div className="">
+                        <div className="w-full">
                             <Scheduler
                                 data={schedulerData}
                             >
                                 <ViewState
                                     currentDate={currentDate}
                                 />
-                                <MonthView
-                                    startDate={"2020-10-1"}
-                                    today={currentDate}
+                                <DayView
+                                    startDayHour={9}
+                                    endDayHour={14}
                                 />
                                 <Appointments />
                             </Scheduler>

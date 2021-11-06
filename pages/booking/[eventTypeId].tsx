@@ -3,16 +3,27 @@ import { GetServerSideProps } from "next";
 import CardLayout from "../../layouts/card";
 import Layout from "../../layouts/Landing";
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-import { Calendar } from "react-modern-calendar-datepicker";
+import { Calendar } from '@hassanmojab/react-modern-calendar-datepicker';
 import { AiFillClockCircle, AiFillEnvironment, AiOutlineArrowLeft } from "react-icons/ai";
 import Router from "next/router";
+import prisma from "../../lib/prisma";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const { eventTypeId } = context.query;
-    const eventType = {
-
-    }
+    
+    const eventType = await prisma.eventType.findFirst({
+        where: {
+            id: Number(eventTypeId)
+        },
+        include: {
+            user: {
+                select: {
+                    fullName: true
+                }
+            }
+        }
+    });
 
     return {
         props: {
@@ -63,7 +74,7 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
-            }).then((result) => {
+            }).then((_) => {
                 Router.push("/success");
             }).catch((error) => {
                 console.log(error)
@@ -80,19 +91,21 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
                     <div className="grid grid-cols-8 gap-5 px-10 py-7">
                         <div className="flex flex-col col-span-3 pt-6">
                             <div className="w-16 h-16 text-white bg-pink-700 rounded-full">
-                                <h1 className="px-4 py-3 text-4xl font-bold text">M</h1>
+                                <h1 className="px-4 py-3 text-4xl font-bold text">  {eventType.user.fullName.substr(0, 1).toUpperCase()}</h1>
                             </div>
-                            <h2 className="pt-3 pb-1 text-lg text-gray-600">Michael</h2>
-                            <h1 className="pb-4 text-3xl font-bold text-gray-700">Event Type Title</h1>
+                            <h2 className="pt-3 pb-1 text-lg text-gray-600">{ eventType.user.fullName }</h2>
+                            <h1 className="pb-4 text-3xl font-bold text-gray-700">{ eventType.title }</h1>
                             <div className="flex flex-row gap-2">
                                 <AiFillClockCircle size="25" className="text-gray-500" />
-                                <p className="text-base text-gray-500">30 min</p>
+                                <p className="text-base text-gray-500">{ eventType.duration } { eventType.duration == 1 ? "Hour": "Minutes" }</p>
                             </div>
                             <div className="flex flex-row gap-2 py-2">
                                 <AiFillEnvironment size="25" className="text-gray-500" />
-                                <p className="text-base text-gray-500">Location</p>
+                                <p className="text-base text-gray-500">{ eventType.location } </p>
                             </div>
-                            <p className="pt-2 w-full text-sm text-gray-800">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos non optio, perferendis doloribus amet, exercitationem voluptatibus minim</p>
+                            <p className="pt-2 w-full text-sm text-gray-800">
+                                { eventType.description }
+                            </p>
                         </div>
                         {nextStep ? (
                             <>

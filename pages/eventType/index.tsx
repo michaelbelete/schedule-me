@@ -6,7 +6,7 @@ import Router from "next/router";
 
 
 const EventType: React.FC<{ user: User }> = ({ user }) => {
-    
+
     const [title, setTitle] = useState('');
     const [duration, setDuration] = useState('');
     const [location, setLocation] = useState('');
@@ -20,8 +20,8 @@ const EventType: React.FC<{ user: User }> = ({ user }) => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
-            }).then((result) => {
-                Router.push("/success");
+            }).then((_) => {
+                Router.push("/");
             }).catch((error) => {
                 console.log(error)
             });
@@ -76,6 +76,7 @@ const EventType: React.FC<{ user: User }> = ({ user }) => {
                                     placeholder="Duration"
                                     className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
                                     required>
+                                        <option value="">Select Duration</option>
                                     <option value="10">10 min</option>
                                     <option value="10">15 min</option>
                                     <option value="10">30 min</option>
@@ -91,7 +92,9 @@ const EventType: React.FC<{ user: User }> = ({ user }) => {
                                     value={description}
                                     required
                                 ></textarea>
-                                <input disabled={!location || !title || !duration || !description} className="items-center p-3 mt-5 w-full text-sm font-bold text-white bg-pink-600 rounded-3xl disabled:opacity-80" type="submit" value="Create Event Type" />
+                                <button disabled={!location || !title || !duration || !description} className="items-center p-3 mt-5 w-full text-sm font-bold text-white bg-pink-600 rounded-3xl disabled:bg-gray-300" type="submit" >
+                                    Create Event Type
+                                </button>
                             </form>
                         </div>
                     </div>

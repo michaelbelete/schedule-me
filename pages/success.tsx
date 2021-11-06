@@ -22,9 +22,9 @@ const Success: React.FC = () => {
             </div>
             <h1 className="mt-3 text-4xl font-bold text-green-700">Success</h1>
             <p className="mt-3 text-gray-800">Your event has been created successfully</p>
-            <Link href="/">
+            {/* <Link href="/">
               <p className="px-10 py-2 mt-6 text-white bg-green-600 rounded">Go Back</p>
-            </Link>
+            </Link> */}
           </div>
         </CardLayout>
       </div>
