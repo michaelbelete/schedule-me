@@ -19,17 +19,17 @@ const TimePicker = (props: any): ReactElement => {
     for (let index = 0; index < 36; index++) {
         time = `${F(index)}:${timeBoolean ? "00" : "30"}`;
         timepicker.push(
-            <button key={index} onClick={(e) => onClick(e.target.value)} className = "py-2 mb-4 w-full text-2xl text-center text-white bg-purple-800 rounded-lg border-2 cursor-pointer" value = { time } >
-                { time }
+            <button key={index} onClick={(e) => onClick(e.target.value)} className="py-1 mb-3 w-full text-2xl text-center text-purple-700 bg-white rounded-lg border-2 border-purple-700 cursor-pointer" value={time} >
+                {time}
             </button >
         );
-timeBoolean = !timeBoolean;
+        timeBoolean = !timeBoolean;
     }
-return (
-    <div className="overflow-x-hidden overflow-y-scroll h-96">
-        {timepicker}
-    </div>
-)
+    return (
+        <div className="overflow-x-hidden overflow-y-scroll h-72">
+            {timepicker}
+        </div>
+    )
 }
 
 export default TimePicker;

@@ -128,14 +128,12 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
                                         shouldHighlightWeekends
                                     />
                                 </div>
-                                <div className="col-span-2 pt-24">
+                                <div className="col-span-2 pt-16">
                                     <div className="pb-3 text-sm font-bold text-gray-700">{selectedDateString}</div>
                                     <div className="pb-3 text-sm font-bold text-gray-700">{selectedTime}</div>
 
                                     {(selectedDateString) ? (
-                                        <div className="overflow-x-hidden overflow-y-scroll h-96">
-                                            <TimePicker duration={eventType.duration} onClick={setSelectedTime}/>
-                                        </div>
+                                        <TimePicker duration={eventType.duration} onClick={setSelectedTime} />
                                     ) : ""}
                                 </div>
                             </>
