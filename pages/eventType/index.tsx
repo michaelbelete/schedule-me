@@ -78,9 +78,9 @@ const EventType: React.FC<{ user: User }> = ({ user }) => {
                                     required>
                                         <option value="">Select Duration</option>
                                     <option value="10">10 min</option>
-                                    <option value="10">15 min</option>
-                                    <option value="10">30 min</option>
-                                    <option value="10">1 hour</option>
+                                    <option value="15">15 min</option>
+                                    <option value="30">30 min</option>
+                                    <option value="60">1 hour</option>
                                 </select>
                                 <label htmlFor="Description" className="mt-2 w-full">Description</label>
                                 <textarea
