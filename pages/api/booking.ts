@@ -1,9 +1,9 @@
+import { Attendee } from '.prisma/client';
 import prisma from '../../lib/prisma';
 export default async function handle(req, res) {
-  const { fullName, title, location, email, startTime, endTime, userId } =
-    req.body;
+  const { date, email, eventTypeId, fullName, time } = req.body;
 
-  const newAttendee = await prisma.attende.create({
+  const newAttendee: Attendee = await prisma.attendee.create({
     data: {
       name: fullName,
       email: email,
@@ -12,17 +12,14 @@ export default async function handle(req, res) {
 
   const newEvent = await prisma.event.create({
     data: {
-      title: title,
-      location: location,
-      start_time: new Date(startTime),
-      end_time: new Date(endTime),
-      user: { connect: { id: userId } },
-      attende: { connect: { id: newAttendee.id } },
+      startDate: new Date(`${date}T${time}:00`),
+      status: 'True',
+      eventType: { connect: { id: eventTypeId } },
+      attendee: { connect: { id: newAttendee?.id } },
     },
   });
 
   res.json({
-    event: newEvent,
-    attende: newAttendee,
+    ...newEvent,
   });
 }

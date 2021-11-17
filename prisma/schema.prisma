@@ -41,7 +41,6 @@ model EventType {
 model Event {
   id  Int @default(autoincrement()) @id
   startDate DateTime @map("start_time")
-  duartion Int @map("duration")
   status String //status of the event if the event is approved, rejected, asked to postpone
   eventType EventType @relation(fields: [eventTypeId], references: [id])
   eventTypeId Int @map("event_type_id")

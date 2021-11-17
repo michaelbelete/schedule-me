@@ -4,27 +4,7 @@ import React, { ReactElement } from "react";
 const TimePicker = (props: any): ReactElement => {
     const { duration, onClick } = props
     let timepicker = [];
-    // let timeBoolean = true;
-    // let time;
-    // const F = (n) => {
-    //     if (n == 0) return 1
-    //     else return n - M(F(n - 1))
-    // }
 
-    // const M = (n) => {
-    //     if (n == 0) return 0
-    //     else return n - F(M(n - 1))
-    // }
-
-    // for (let index = 0; index < 36; index++) {
-    //     time = `${F(index)}:${timeBoolean ? "00" : "30"}`;
-    // timepicker.push(
-    //     <button key={index} onClick={(e) => onClick(e.target.value)} className="py-1 mb-3 w-full text-2xl text-center text-purple-700 bg-white rounded-lg border-2 border-purple-700 cursor-pointer" value={time} >
-    //         {time}
-    //     </button >
-    // );
-    //     timeBoolean = !timeBoolean;
-    // }
     const times = []
     //return how many times the hour repeats in the time picker
     // eg. if the duration is 30 min. 60/30 returns 2 so the repetition return 2 times 
@@ -32,7 +12,7 @@ const TimePicker = (props: any): ReactElement => {
     // const repetition = 60 / Number(duration);
     const repetition = 60 / Number(duration);
     for (let i = 0; i < repetition; i++) {
-        for (let hour = 0; hour < 23; hour++) {
+        for (let hour = 9; hour < 18; hour++) {
             times.push(hour)
         }
     }

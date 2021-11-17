@@ -62,7 +62,7 @@ const Landing: React.FC<{ user: User, eventTypes: EventType[] }> = ({ user, even
       const generateEventType = () => {
         let result = [];
         eventTypes.forEach((eventType) => {
-          result.push(<EventTypeCard eventType={eventType}/>)
+          result.push(<EventTypeCard eventType={eventType} />)
         })
 
         return result;
@@ -77,10 +77,10 @@ const Landing: React.FC<{ user: User, eventTypes: EventType[] }> = ({ user, even
               <div className="px-10 py-6">
                 <h1 className="pb-8 text-4xl">Event Types</h1>
                 <div className="grid grid-cols-3 gap-10">
-                  { generateEventType() }
+                  {generateEventType()}
                 </div>
                 <pre>
-              </pre>
+                </pre>
               </div>
             </CardLayout>
           </div>

@@ -40,13 +40,14 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
     const [email, setEmail] = useState('');
 
     const [nextStep, setNextStep] = useState(false);
-    const selectedDate = (selectedDay == null) ? "" : new Date(`${selectedDay?.year}-${selectedDay?.month}-${selectedDay?.day}`);
+    const selectedDateDefault = `${selectedDay?.year}-${selectedDay?.month}-${selectedDay?.day}`;
+    const selectedDate = (selectedDay == null) ? "" : new Date(selectedDateDefault);
     const selectedDateString = (selectedDay == null) ? "" : selectedDate.toDateString();
 
     const submitData = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         try {
-            const body = { selectedDate, selectedTime, name, email };
+            const body = { eventTypeId: eventType?.id, date: selectedDateDefault, time: selectedTime, fullName: name, email: email };
             await fetch("/api/booking", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -97,7 +98,7 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
                                             id="fullName"
                                             autoFocus
                                             onChange={(e) => setName(e.target.value)}
-                                            placeholder="Title"
+                                            placeholder="FUll Name"
                                             className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
                                             type="text"
                                             value={name}
@@ -108,7 +109,7 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
                                             id="Email"
                                             autoFocus
                                             onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="Location"
+                                            placeholder="Email"
                                             className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
                                             type="text"
                                             value={email}

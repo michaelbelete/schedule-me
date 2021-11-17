@@ -5,7 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import CardLayout from "../../layouts/card";
 import prisma from "../../lib/prisma";
-import { EventType } from ".prisma/client";
+import { EventType, Event } from ".prisma/client";
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import {
     Scheduler,
@@ -97,7 +97,3 @@ const Events: React.FC<{ event: Event, eventType: EventType }> = ({ event, event
 }
 
 export default Events;
-
-function dynamic<T>(arg0: Promise<{ (props: SchedulerProps): JSX.Element; defaultProps: import("@aldabil/react-scheduler/dist/types").SchedulerProps; }>, arg1: { ssr: boolean; }) {
-    throw new Error("Function not implemented.");
-}
