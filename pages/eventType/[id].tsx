@@ -7,9 +7,10 @@ import CardLayout from "../../layouts/card";
 import prisma from "../../lib/prisma";
 import { EventType, Event } from ".prisma/client";
 import { ViewState } from '@devexpress/dx-react-scheduler';
+import superjson from 'superjson';
 import {
     Scheduler,
-    DayView,
+    MonthView,
     Appointments,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
@@ -22,22 +23,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
     });
 
-    const event: Event[] = await prisma.event.findMany({
+    let events = await prisma.event.findMany({
         where: {
             eventTypeId: Number(id)
         }
     });
 
+    const { json, meta } = superjson.serialize(events);
+
     return {
         props: {
-            event,
+            events: json,
             eventType
         }
     }
 }
 
 
-const Events: React.FC<{ event: Event, eventType: EventType }> = ({ event, eventType }) => {
+const Events: React.FC<{ events: any, eventType: EventType }> = ({ events, eventType }) => {
     let link = "localhost:3000/";
     if (typeof window === 'object') {
         link = window.location.origin
@@ -47,12 +50,28 @@ const Events: React.FC<{ event: Event, eventType: EventType }> = ({ event, event
 
     const currentDate = '2021-11-03';
     const schedulerData = [
-        { startDate: '2021-11-03T09:45', endDate: '2021-11-03T11:00', title: 'One to one meeting' },
-        { startDate: '2021-11-03T12:00', endDate: '2021-11-03T14:30', title: 'Pair programming' },
-        { startDate: '2021-11-03T12:00', endDate: '2021-11-03T15:30', title: 'Another Task' },
+        // { startDate: '2021-11-03T09:45', endDate: '2021-11-03T11:00', title: 'One to one meeting' },
+        // { startDate: '2021-11-03T12:00', endDate: '2021-11-03T14:30', title: 'Pair programming' },
+        // { startDate: '2021-11-03T12:00', endDate: '2021-11-03T15:30', title: 'Another Task' },
     ];
 
+    var add_minutes =  function (dt, minutes) {
+        return new Date(dt.getTime() + minutes*60000);
+    }
 
+    var convert_time_to_string = function(d) {
+        return d.getFullYear() + "-" + d.getMonth()+"-"+d.getDay()+"T"+d.getHours()+":"+d.getMinutes()
+    }
+
+
+    events.forEach((event) => {
+        let startDate: Date = new Date(event.startDate)
+        schedulerData.push(
+            { startDate: startDate.toISOString(), endDate: add_minutes(startDate, Number(eventType.duration)).toISOString(), title: eventType.title}
+        )
+    });
+
+    console.log(schedulerData);
     return (
         <Layout>
             <div className="flex flex-col justify-center items-center px-36 pt-20 mb-5">
@@ -80,11 +99,8 @@ const Events: React.FC<{ event: Event, eventType: EventType }> = ({ event, event
                                 data={schedulerData}
                             >
                                 <ViewState
-                                    currentDate={currentDate}
                                 />
-                                <DayView
-                                    startDayHour={9}
-                                    endDayHour={14}
+                                <MonthView
                                 />
                                 <Appointments />
                             </Scheduler>

@@ -21,7 +21,7 @@ const EventType: React.FC<{ user: User }> = ({ user }) => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
             }).then((_) => {
-                Router.push("/");
+                Router.push("/success");
             }).catch((error) => {
                 console.log(error)
             });
