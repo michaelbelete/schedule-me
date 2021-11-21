@@ -74,7 +74,7 @@ const Events: React.FC<{ events: any, eventType: EventType }> = ({ events, event
 
     return (
         <Layout>
-            <div className="flex flex-col justify-center items-center px-36 pt-20 mb-5">
+            <div className="flex flex-col justify-center items-center px-36 pt-10 mb-5">
                 <h1 className="text-5xl font-bold text-white">{eventType.title}</h1>
                 <p className="mt-5 text-white">Create a new event and share your link to start using
                     schedule me</p>
