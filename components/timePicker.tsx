@@ -1,4 +1,3 @@
-import { on } from "events";
 import React, { ReactElement } from "react";
 
 const TimePicker = (props: any): ReactElement => {
