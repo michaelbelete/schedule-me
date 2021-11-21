@@ -11,6 +11,7 @@ import superjson from 'superjson';
 import {
     Scheduler,
     MonthView,
+    DayView,
     Appointments,
 } from '@devexpress/dx-react-scheduler-material-ui';
 
@@ -26,6 +27,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     let events = await prisma.event.findMany({
         where: {
             eventTypeId: Number(id)
+        },
+        include: {
+            attendee: true
         }
     });
 
@@ -47,31 +51,22 @@ const Events: React.FC<{ events: any, eventType: EventType }> = ({ events, event
     }
     const [value, setValue] = useState(`${link}/booking/${eventType?.id}`);
     const [copySuccess, setCopySuccess] = useState("copy");
+    const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0])
+    const [monthOrDate, setMonthOrDate] = useState("month");
+    const schedulerData = [];
 
-    const currentDate = '2021-11-03';
-    const schedulerData = [
-        // { startDate: '2021-11-03T09:45', endDate: '2021-11-03T11:00', title: 'One to one meeting' },
-        // { startDate: '2021-11-03T12:00', endDate: '2021-11-03T14:30', title: 'Pair programming' },
-        // { startDate: '2021-11-03T12:00', endDate: '2021-11-03T15:30', title: 'Another Task' },
-    ];
-
-    var add_minutes =  function (dt, minutes) {
-        return new Date(dt.getTime() + minutes*60000);
+    var add_minutes = function (dt, minutes) {
+        return new Date(dt.getTime() + minutes * 60000);
     }
-
-    var convert_time_to_string = function(d) {
-        return d.getFullYear() + "-" + d.getMonth()+"-"+d.getDay()+"T"+d.getHours()+":"+d.getMinutes()
-    }
-
 
     events.forEach((event) => {
+        console.log(event);
         let startDate: Date = new Date(event.startDate)
         schedulerData.push(
-            { startDate: startDate.toISOString(), endDate: add_minutes(startDate, Number(eventType.duration)).toISOString(), title: eventType.title}
+            { startDate: startDate.toISOString(), endDate: add_minutes(startDate, Number(eventType.duration)).toISOString(), title: `${eventType.title}  with ${event.attendee.name}` }
         )
     });
 
-    console.log(schedulerData);
     return (
         <Layout>
             <div className="flex flex-col justify-center items-center px-36 pt-20 mb-5">
@@ -93,15 +88,25 @@ const Events: React.FC<{ events: any, eventType: EventType }> = ({ events, event
 
                 <CardLayout>
                     <div className="px-10 py-6">
-                        <h1 className="pb-8 text-4xl">Events</h1>
+                        <div className="flex flex-row justify-between pb-10">
+                            <h1 className="text-4xl">Events</h1>
+                            <div className="flex flex-row gap-2">
+                                <select className="px-3 py-2 bg-white rounded-lg border border-gray-300 text-gray" onChange={(e) => { setMonthOrDate(e.target.value) }}>
+                                    <option value="month">Month</option>
+                                    <option value="day">Day</option>
+                                </select>
+                                <input type="date" className="px-3 py-2 bg-white rounded-lg border border-gray-300 text-gray" value={currentDate} onChange={(e) => { setCurrentDate(e.target.value) }} />
+                            </div>
+                        </div>
                         <div className="w-full">
                             <Scheduler
                                 data={schedulerData}
                             >
-                                <ViewState
-                                />
-                                <MonthView
-                                />
+                                <ViewState currentDate={currentDate} />
+                                {monthOrDate == "month" ? (<MonthView />) : (<DayView
+                                    startDayHour={9}
+                                    endDayHour={18}
+                                />)}    
                                 <Appointments />
                             </Scheduler>
                         </div>
