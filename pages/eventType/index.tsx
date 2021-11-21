@@ -20,8 +20,9 @@ const EventType: React.FC<{ user: User }> = ({ user }) => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
-            }).then((_) => {
-                Router.push("/success");
+            }).then((res) => {
+                console.log(res)
+                // Router.push("/success");
             }).catch((error) => {
                 console.log(error)
             });

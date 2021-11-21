@@ -8,13 +8,19 @@ import prisma from "../../lib/prisma";
 import { EventType, Event } from ".prisma/client";
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import superjson from 'superjson';
+
 import {
     Scheduler,
-    MonthView,
     DayView,
+    MonthView,
+    DateNavigator,
     Appointments,
+    Toolbar,
+    ViewSwitcher,
+    WeekView,
+    TodayButton,
+    AppointmentTooltip,
 } from '@devexpress/dx-react-scheduler-material-ui';
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const { id } = context.query;
@@ -51,8 +57,7 @@ const Events: React.FC<{ events: any, eventType: EventType }> = ({ events, event
     }
     const [value, setValue] = useState(`${link}/booking/${eventType?.id}`);
     const [copySuccess, setCopySuccess] = useState("copy");
-    const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0])
-    const [monthOrDate, setMonthOrDate] = useState("month");
+    const [currentDate, setCurrentDate] = useState(new Date())
     const schedulerData = [];
 
     var add_minutes = function (dt, minutes) {
@@ -85,36 +90,32 @@ const Events: React.FC<{ events: any, eventType: EventType }> = ({ events, event
                 </div>
             </div>
             <div className="pt-12">
-
                 <CardLayout>
                     <div className="px-10 py-6">
-                        <div className="flex flex-row justify-between pb-8">
-                            <h1 className="py-8 text-4xl">Events</h1>
-                            <div className="flex flex-row gap-2">
-                                <div className="flex flex-col gap-2">
-                                    <label htmlFor="view" className="text-sm text-gray-600">View Type</label>
-                                    <select className="px-3 py-2 bg-white rounded-lg border border-gray-300 text-gray" id="view" onChange={(e) => { setMonthOrDate(e.target.value) }}>
-                                        <option value="month">Month</option>
-                                        <option value="day">Day</option>
-                                    </select>
-                                </div>
-                                {monthOrDate == "day" ? (<div className="flex flex-col gap-2">
-                                    <label htmlFor="view" className="text-sm text-gray-600">Current Date</label>
-                                    <input type="date" className="px-3 py-2 bg-white rounded-lg border border-gray-300 text-gray" value={currentDate} onChange={(e) => { setCurrentDate(e.target.value) }} />
-                                </div>): null  }
-                                
-                            </div>
+                        <div className="flex flex-row justify-between">
+                            <h1 className="py-5 text-4xl">Events</h1>
                         </div>
                         <div className="w-full">
                             <Scheduler
                                 data={schedulerData}
                             >
-                                <ViewState currentDate={currentDate} />
-                                {monthOrDate == "month" ? (<MonthView />) : (<DayView
+                                <ViewState currentDate={currentDate} defaultCurrentViewName="Week" onCurrentDateChange={(date) => { setCurrentDate(date) }} />
+                                <MonthView />
+                                <DayView
                                     startDayHour={9}
                                     endDayHour={18}
-                                />)}
+                                />
+                                <WeekView
+                                    startDayHour={9}
+                                    endDayHour={18} />
+                                <Toolbar />
+                                <DateNavigator />
+                                <TodayButton />
+                                <ViewSwitcher />
                                 <Appointments />
+                                <AppointmentTooltip
+                                    showCloseButton
+                                />
                             </Scheduler>
                         </div>
                     </div>

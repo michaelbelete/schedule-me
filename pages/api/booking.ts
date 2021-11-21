@@ -10,6 +10,7 @@ export default async function handle(req, res) {
     },
   });
 
+  console.log(newAttendee);
   const newEvent = await prisma.event.create({
     data: {
       startDate: new Date(`${date}T${time}:00`),
@@ -18,6 +19,8 @@ export default async function handle(req, res) {
       attendee: { connect: { id: newAttendee?.id } },
     },
   });
+
+  console.log(newEvent);
 
   res.json({
     ...newEvent,
