@@ -1,28 +1,30 @@
+import { Attendee } from '.prisma/client';
 import prisma from '../../lib/prisma';
 export default async function handle(req, res) {
-  const { fullName, title, location, email, startTime, endTime, userId } =
-    req.body;
+  if (req.method === 'POST') {
+    let { date, email, eventTypeId, fullName, time } = req.body;
 
-  const newAttendee = await prisma.attende.create({
-    data: {
-      name: fullName,
-      email: email,
-    },
-  });
+    date = new Date(date); //convert string to date object
+    time = time.split(':'); //split hour and minute and put it into an array eg. "8:30" to [8,30]
+    date.setUTCHours(time[0], time[1]); //add hour and minute to date
 
-  const newEvent = await prisma.event.create({
-    data: {
-      title: title,
-      location: location,
-      start_time: new Date(startTime),
-      end_time: new Date(endTime),
-      user: { connect: { id: userId } },
-      attende: { connect: { id: newAttendee.id } },
-    },
-  });
-
-  res.json({
-    event: newEvent,
-    attende: newAttendee,
-  });
+    const newAttendee: Attendee = await prisma.attendee.create({
+      data: {
+        name: fullName,
+        email: email,
+      },
+    });
+    const newEvent = await prisma.event.create({
+      data: {
+        startDate: date,
+        status: 'True',
+        eventType: { connect: { id: eventTypeId } },
+        attendee: { connect: { id: newAttendee.id } },
+      },
+    });
+    res.json(newEvent);
+  } else {
+    res.status(405);
+    res.end();
+  }
 }

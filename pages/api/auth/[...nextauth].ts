@@ -14,6 +14,7 @@ const configuration = {
     maxAge: 30 * 24 * 60 * 60
   },
   providers: [
+
     Providers.Credentials({
       name: "credentials",
       credentials: {
@@ -58,6 +59,11 @@ const configuration = {
         }
       },
     }),
+    Providers.Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
   ],
+  
 };
 export default (req, res) => NextAuth(req, res, configuration);

@@ -4,48 +4,51 @@ import Layout from "../layouts/Landing";
 import { GetServerSideProps } from "next";
 import { getSession, useSession } from "next-auth/client";
 import prisma from "../lib/prisma";
-import { Event, User } from ".prisma/client";
+import { Event, EventType, User } from ".prisma/client";
 import HeaderLoggedIn from "../components/loggedIn/header";
 import NavBarLoggedIn from "../components/loggedIn/navbar";
 import NavBarPublic from "../components/public/navbar";
 import HeaderPublic from "../components/public/header";
 import Events from "../components/events";
 import NavbarPublic from "../components/public/navbar";
+import { AiFillClockCircle, AiFillEnvironment } from "react-icons/ai";
+import EventTypeCard from "../components/eventTypeCard";
 
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req });
 
-  let user = {};
-  let event = {};
   if (session) {
-    await prisma.user.findFirst({
+    const user: User = await prisma.user.findFirst({
       where: {
         email: session.user.email
       }
-    }).then(async (result) => {
-      event = await prisma.event.findMany({
-        where: {
-          userId: result.id
-        },
-        include: {
-          attendee: { select: { name: true } }
-        }
-      })
-      event = JSON.parse(JSON.stringify(event))
-      user = result
     });
-  }
 
-  return {
-    props: {
-      user,
-      event
+    const eventTypes: EventType[] = await prisma.eventType.findMany({
+      where: {
+        userId: user.id
+      },
+      orderBy: { id: "desc" }
+    });
+    return {
+      props: {
+        user,
+        eventTypes
+      }
+    }
+  } else {
+    // if the user not logged in
+    //show public data fetched
+    return {
+      props: {
+
+      }
     }
   }
 }
 
-const Landing: React.FC<{ user: User, event: Event }> = ({ user, event }) => {
+const Landing: React.FC<{ user: User, eventTypes: EventType[] }> = ({ user, eventTypes }) => {
   const [session, loading] = useSession();
 
   if (loading) {
@@ -56,21 +59,36 @@ const Landing: React.FC<{ user: User, event: Event }> = ({ user, event }) => {
     );
   } else {
     if (session) {
+      const generateEventType = () => {
+        let result = [];
+        eventTypes.forEach((eventType) => {
+          result.push(<EventTypeCard eventType={eventType} />)
+        })
+
+        return result;
+      }
+
       return (
         <Layout>
           <NavBarLoggedIn user={user} />
           <HeaderLoggedIn user={user} />
-          <CardLayout>
-            <div className="px-10 py-6">
-              <h1 className="pb-5 text-4xl">Events</h1>
-              <Events events={event} />
-            </div>
-          </CardLayout>
+          <div className="pb-44">
+            <CardLayout>
+              <div className="px-10 py-6">
+                <h1 className="pb-8 text-4xl">Event Types</h1>
+                <div className="grid grid-cols-3 gap-10">
+                  {generateEventType()}
+                </div>
+                <pre>
+                </pre>
+              </div>
+            </CardLayout>
+          </div>
         </Layout>
       )
     } else {
       return (
-        
+
         <Layout>
           <NavBarPublic />
           <HeaderPublic />
