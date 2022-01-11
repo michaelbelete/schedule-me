@@ -1,5 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import CardLayout from "../layouts/card";
 import Layout from "../layouts/Landing";
@@ -7,13 +7,16 @@ import Layout from "../layouts/Landing";
 const Success: React.FC = () => {
   return (
     <Layout>
-      <div className="flex flex-col gap-10 items-center px-10 pt-14">
+      <div className="flex flex-col gap-16 items-center px-10 pt-14">
+        <div />
         <div>
-          <Image src="/images/logo.png"
-            height={80}
-            width={300}
-            layout="fixed"
-          />
+          <Link href="/">
+            <Image src="/images/logo.png"
+              height={60}
+              width={300}
+              layout="fixed"
+            />
+          </Link>
         </div>
         <CardLayout>
           <div className="flex flex-col items-center py-10">

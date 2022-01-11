@@ -47,13 +47,16 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
     const submitData = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         try {
-            const body = { eventTypeId: eventType?.id, date: selectedDateDefault, time: selectedTime, fullName: name, email: email };
+            const body = {
+                eventTypeId: eventType?.id, date: selectedDate, time: selectedTime, fullName: name, email: email
+            };
+
             await fetch("/api/booking", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
-            }).then((_) => {
-                Router.push("/success");
+            }).then((res) => {
+                Router.push("/success")
             }).catch((error) => {
                 console.log(error)
             });

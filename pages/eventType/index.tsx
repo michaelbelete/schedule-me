@@ -20,12 +20,9 @@ const EventType: React.FC<{ user: User }> = ({ user }) => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
-            }).then((res) => {
-                console.log(res)
-                // Router.push("/success");
-            }).catch((error) => {
-                console.log(error)
-            });
+            }).then((_) => {
+                Router.push('/success');
+            })
         } catch (error) {
             console.error(error);
         }
@@ -77,7 +74,7 @@ const EventType: React.FC<{ user: User }> = ({ user }) => {
                                     placeholder="Duration"
                                     className="px-3 py-2 my-2 w-full rounded-xl border-2 border-gray-300"
                                     required>
-                                        <option value="">Select Duration</option>
+                                    <option value="">Select Duration</option>
                                     <option value="10">10 min</option>
                                     <option value="15">15 min</option>
                                     <option value="30">30 min</option>
