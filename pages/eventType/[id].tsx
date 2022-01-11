@@ -101,13 +101,8 @@ const Events: React.FC<{ events: any, eventType: EventType }> = ({ events, event
                             >
                                 <ViewState currentDate={currentDate} defaultCurrentViewName="Week" onCurrentDateChange={(date) => { setCurrentDate(date) }} />
                                 <MonthView />
-                                <DayView
-                                    startDayHour={9}
-                                    endDayHour={18}
-                                />
-                                <WeekView
-                                    startDayHour={9}
-                                    endDayHour={18} />
+                                <DayView />
+                                <WeekView />
                                 <Toolbar />
                                 <DateNavigator />
                                 <TodayButton />
