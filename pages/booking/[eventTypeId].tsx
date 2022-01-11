@@ -9,6 +9,9 @@ import { AiFillClockCircle, AiFillEnvironment, AiOutlineArrowLeft } from "react-
 import Router from "next/router";
 import prisma from "../../lib/prisma";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const { eventTypeId } = context.query;
@@ -56,7 +59,16 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
             }).then((res) => {
-                Router.push("/success")
+                toast.success('Event Booked', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    onClose: () => { Router.push("/") }
+                });
+
             }).catch((error) => {
                 console.log(error)
             });
@@ -150,6 +162,7 @@ const Booking: React.FC<{ eventType: any }> = ({ eventType }) => {
                     </div>
                 </CardLayout>
             </div>
+            <ToastContainer />
         </Layout>
     )
 }
