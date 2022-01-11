@@ -21,8 +21,7 @@ const TimePicker = (props: any): ReactElement => {
     });
 
     let minute = 0;
-    let index = 1;
-    times.forEach((hour) => {
+    times.forEach((hour, index) => {
         let time = `${hour}:${(minute === 0) ? "00" : minute}`;
         timepicker.push(
             <button key={index} onClick={(e) => onClick(e.target.value)} className="py-1 mb-3 w-full text-2xl text-center text-purple-700 bg-white rounded-lg border-2 border-purple-700 cursor-pointer" value={time} >
@@ -34,7 +33,6 @@ const TimePicker = (props: any): ReactElement => {
         } else {
             minute = 0
         }
-        index++;
     })
     return (
         <div className="overflow-x-hidden overflow-y-scroll h-72">

@@ -60,15 +60,14 @@ const Events: React.FC<{ events: any, eventType: EventType }> = ({ events, event
     const [currentDate, setCurrentDate] = useState(new Date())
     const schedulerData = [];
 
-    var add_minutes = function (dt, minutes) {
+    var addMinutes = function (dt, minutes) {
         return new Date(dt.getTime() + minutes * 60000);
     }
 
     events.forEach((event) => {
-        console.log(event);
         let startDate: Date = new Date(event.startDate)
         schedulerData.push(
-            { startDate: startDate.toISOString(), endDate: add_minutes(startDate, Number(eventType.duration)).toISOString(), title: `${eventType.title}  with ${event.attendee.name}` }
+            { startDate: startDate.toISOString(), endDate: addMinutes(startDate, Number(eventType.duration)).toISOString(), title: `${eventType.title}  with ${event.attendee.name}` }
         )
     });
 
