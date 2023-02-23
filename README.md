@@ -2,6 +2,10 @@
 
 Calendly clone for scheduling meetings professionally and efficiently, eliminating the hassle of back-and-forth emails so you can get back to work.
 
+![](https://github.com/michaelbelete/schedule-me/blob/main/public/images/demo.gif)
+
+[Click here to see the Demo](https://youtu.be/r7hQRYQCdFg)
+
 ## Prerequisites
 
 - Node.js installed on your system
