@@ -9,6 +9,7 @@ module.exports = {
     './components/**/*.ts',
     './components/**/*.jsx',
     './components/**/*.tsx',
+    './public/**/*.html',
   ],
   theme: {
     extend: {},
